@@ -60,28 +60,26 @@ parser MyParser(packet_in packet,
                 inout metadata meta,
                 inout standard_metadata_t standard_metadata) {
 
-
     state start {
         transition parse_ethernet;
     }
 
     state parse_ethernet {
         packet.extract(hdr.ethernet);
-        /*
-         * TODO: Modify the next line to select on hdr.ethernet.etherType
-         * If the value is TYPE_SRCROUTING transition to parse_srcRouting
-         * otherwise transition to accept.
-         */
-        transition accept;
+        //log_msg("Debug message: etherType = %d", {hdr.ethernet.etherType});
+        transition select(hdr.ethernet.etherType) {
+            TYPE_SRCROUTING: parse_srcRouting;
+            TYPE_IPV4: parse_ipv4;
+            default: accept;
+        }
     }
 
     state parse_srcRouting {
-        /*
-         * TODO: extract the next entry of hdr.srcRoutes
-         * while hdr.srcRoutes.last.bos is 0 transition to this state
-         * otherwise parse ipv4
-         */
-        transition accept;
+        packet.extract(hdr.srcRoutes.next);
+        transition select(hdr.srcRoutes.last.bos) {
+            1: parse_ipv4;
+            default: parse_srcRouting;
+        }
     }
 
     state parse_ipv4 {
@@ -114,11 +112,8 @@ control MyIngress(inout headers hdr,
     }
 
     action srcRoute_nhop() {
-        /*
-         * TODO: set standard_metadata.egress_spec
-         * to the port in hdr.srcRoutes[0] and
-         * pop an entry from hdr.srcRoutes
-         */
+        standard_metadata.egress_spec = (bit<9>)hdr.srcRoutes[0].port;
+        hdr.srcRoutes.pop_front(1);
     }
 
     action srcRoute_finish() {
@@ -129,15 +124,35 @@ control MyIngress(inout headers hdr,
         hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
     }
 
-    apply {
-        if (hdr.srcRoutes[0].isValid()){
-            /*
-             * TODO: add logic to:
-             * - If final srcRoutes (top of stack has bos==1):
-             *   - change etherType to IP
-             * - choose next hop and remove top of srcRoutes stack
-             */
+    action ipv4_forward(macAddr_t dstAddr, egressSpec_t port) {
+        standard_metadata.egress_spec = port;
+        hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
+        hdr.ethernet.dstAddr = dstAddr;
+        update_ttl();
+    }
 
+    table ipv4_lpm {
+        key = {
+            hdr.ipv4.dstAddr: lpm;
+        }
+        actions = {
+            ipv4_forward;
+            drop;
+            NoAction;
+        }
+        size = 1024;
+        default_action = drop();
+    }
+
+    apply {
+        if(hdr.ethernet.etherType == TYPE_IPV4){
+             ipv4_lpm.apply();
+        }
+        else if (hdr.srcRoutes[0].isValid()){
+            if (hdr.srcRoutes[0].bos == 1){
+                srcRoute_finish();
+            }
+            srcRoute_nhop();
             if (hdr.ipv4.isValid()){
                 update_ttl();
             }
@@ -161,7 +176,7 @@ control MyEgress(inout headers hdr,
 *************   C H E C K S U M    C O M P U T A T I O N   **************
 *************************************************************************/
 
-control MyComputeChecksum(inout headers hdr, inout metadata meta) {
+control MyComputeChecksum(inout headers  hdr, inout metadata meta) {
     apply {  }
 }
 
