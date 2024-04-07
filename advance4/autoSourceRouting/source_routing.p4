@@ -146,32 +146,7 @@ control MyIngress(inout headers hdr,
         hdr.ethernet.etherType = TYPE_SRCROUTING;
     }
 
-    action ipv4_forward(macAddr_t dstAddr, egressSpec_t port) {
-        standard_metadata.egress_spec = port;
-        hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
-        hdr.ethernet.dstAddr = dstAddr;
-        update_ttl();
-    }
-
-    table ipv4_lpm {
-        key = {
-            hdr.ipv4.dstAddr: lpm;
-        }
-        actions = {
-            ipv4_forward;
-            drop;
-            NoAction;
-        }
-        size = 1024;
-        default_action = drop();
-    }
-
     apply {
-        if(hdr.ethernet.etherType == TYPE_IPV4){
-             ipv4_lpm.apply();
-        }
-        else
-        {
             if (!hdr.srcRoutes[0].isValid()){
             add_srcRoute();
         }
@@ -188,7 +163,6 @@ control MyIngress(inout headers hdr,
             drop();
         }
         }
-    }
 }
 
 /*************************************************************************
@@ -206,7 +180,23 @@ control MyEgress(inout headers hdr,
 *************************************************************************/
 
 control MyComputeChecksum(inout headers  hdr, inout metadata meta) {
-    apply {  }
+    apply { 
+            update_checksum(
+                    hdr.ipv4.isValid(),
+                        { hdr.ipv4.version,
+                          hdr.ipv4.ihl,
+                          hdr.ipv4.diffserv,
+                          hdr.ipv4.totalLen,
+                          hdr.ipv4.identification,
+                          hdr.ipv4.flags,
+                          hdr.ipv4.fragOffset,
+                          hdr.ipv4.ttl,
+                          hdr.ipv4.protocol,
+                          hdr.ipv4.srcAddr,
+                          hdr.ipv4.dstAddr },
+                        hdr.ipv4.hdrChecksum,
+                        HashAlgorithm.csum16); 
+    }
 }
 
 /*************************************************************************
