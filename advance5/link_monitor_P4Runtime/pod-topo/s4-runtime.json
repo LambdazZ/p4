@@ -1,0 +1,6 @@
+{
+  "target": "bmv2",
+  "p4info": "build/link_monitor.p4.p4info.txt",
+  "bmv2_json": "build/link_monitor.json",
+  "table_entries": []
+}
