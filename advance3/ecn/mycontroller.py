@@ -17,12 +17,17 @@ from p4runtime_lib.error_utils import printGrpcError
 from p4runtime_lib.switch import ShutdownAllSwitchConnections
 
 
-def writeTableRule(p4info_helper, switch, table_name, match_fields, action_name, action_params = None):
+def writeTableRule(p4info_helper, switch, threshold_limit):
     table_entry = p4info_helper.buildTableEntry(
-        table_name=table_name,
-        match_fields=match_fields,
-        action_name=action_name,
-        action_params=action_params)
+        table_name="MyEgress.judge_congestion",
+        match_fields={
+           "standard_metadata.egress_port": 3
+        },
+        action_name="MyEgress.set_ecn_threshold",
+        action_params={
+           "threshold": threshold_limit
+        }
+    )
     switch.WriteTableEntry(table_entry)
 
 def writeIpv4ForwardRule(p4info_helper, switch, dst_ip_addr, forward_mac_addr, forward_port, match_ip_field=32):
@@ -100,26 +105,8 @@ def main(p4info_file_path, bmv2_file_path):
         print("Installed IPv4 forward rules")
         
         # Install ecn rules
-        writeTableRule(p4info_helper, s1, 
-            table_name="MyEgress.judge_congestion", 
-            match_fields={
-                "standard_metadata.egress_port": 3
-            },
-            action_name="MyEgress.set_ecn_threshold",
-            action_params={
-                "threshold": threshold_limit
-            }
-        )
-        writeTableRule(p4info_helper, s2, 
-            table_name="MyEgress.judge_congestion", 
-            match_fields={
-                "standard_metadata.egress_port": 3
-            },
-            action_name="MyEgress.set_ecn_threshold",
-            action_params={
-                "threshold": threshold_limit
-            }
-        )
+        writeTableRule(p4info_helper, s1, threshold_limit)
+        writeTableRule(p4info_helper, s2, threshold_limit)
 
 
     except KeyboardInterrupt:
