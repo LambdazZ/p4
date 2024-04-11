@@ -26,8 +26,8 @@ def writeTableRule(p4info_helper, switch, table_name, match_fields, action_name,
     switch.WriteTableEntry(table_entry)
 
 def writeIpv4ForwardRule(p4info_helper, switch, dst_ip_addr, forward_mac_addr, forward_port, match_ip_field=32):
-    writeTableRule(p4info_helper, switch, 
-        table_name="MyIngress.ipv4table", 
+    table_entry = p4info_helper.buildTableEntry(
+        table_name="MyIngress.ipv4table",
         match_fields={
             "hdr.ipv4.dstAddr": (dst_ip_addr, match_ip_field)
         },
@@ -37,6 +37,7 @@ def writeIpv4ForwardRule(p4info_helper, switch, dst_ip_addr, forward_mac_addr, f
             "port": forward_port
         }
     )
+    switch.WriteTableEntry(table_entry)
 
 
 def main(p4info_file_path, bmv2_file_path):
