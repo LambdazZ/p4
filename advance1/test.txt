@@ -1,0 +1,40 @@
+  header_type arp_t {
+      fields {
+          arp_hrd : 16;
+          arp_pro : 16;
+          arp_hln : 8;
+          arp_pln : 8;
+          arp_op  : 16;
+          arp_sha : 48;
+          arp_spa : 32;
+          arp_tha : 48;
+          arp_tpa : 32;
+      }
+  }
+
+  header arp_t arp;
+
+  parser parse_arp {
+      extract(arp);
+  }
+
+  control arp_handler {
+      apply {
+          if (arp.arp_op == ARPOP_REQUEST) {
+              if (arp.arp_tpa == MyIPAddr) {
+                  arp.arp_op = ARPOP_REPLY;
+                  arp.arp_tha = arp.arp_sha;
+                  arp.arp_sha = MyMACAddr;
+                  arp.arp_tpa = arp.arp_spa;
+                  arp.arp_spa = MyIPAddr;
+                  hdr.ethernet.srcAddr = MyMACAddr;
+                  hdr.ethernet.dstAddr = arp.arp_tha;
+                  hdr.ipv4.ttl = 64;
+                  hdr.ipv4.srcAddr = MyIPAddr;
+                  hdr.ipv4.dstAddr = arp.arp_tpa;
+                  standard_metadata.egress_spec = lookup(arp.arp_tha);
+                  output;
+              }
+          }
+      }
+  }
