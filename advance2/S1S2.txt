@@ -1,0 +1,224 @@
+
+ s1 -> s2 
+s1send0packages,num:100
+s2receive0packages,num:100
+
+ s2 -> s1 
+s2send0packages,num:200
+s1receive0packages,num:200
+
+ s1 -> s2 
+s1send0packages,num:100
+s2receive0packages,num:100
+
+ s2 -> s1 
+s2send0packages,num:200
+s1receive0packages,num:200
+
+ s1 -> s2 
+s1send0packages,num:100
+s2receive0packages,num:100
+
+ s2 -> s1 
+s2send0packages,num:200
+s1receive0packages,num:200
+
+ s1 -> s2 
+s1send0packages,num:100
+s2receive0packages,num:100
+
+ s2 -> s1 
+s2send0packages,num:200
+s1receive0packages,num:200
+
+ s1 -> s2 
+s1send0packages,num:100
+s2receive0packages,num:100
+
+ s2 -> s1 
+s2send0packages,num:200
+s1receive0packages,num:200
+
+ s1 -> s2 
+s1send0packages,num:100
+s2receive0packages,num:100
+
+ s2 -> s1 
+s2send0packages,num:200
+s1receive0packages,num:200
+
+ s1 -> s2 
+s1send2packages,num:100
+s2receive2packages,num:100
+
+ s2 -> s1 
+s2send2packages,num:200
+s1receive2packages,num:200
+
+ s1 -> s2 
+s1send4packages,num:100
+s2receive4packages,num:100
+
+ s2 -> s1 
+s2send4packages,num:200
+s1receive4packages,num:200
+
+ s1 -> s2 
+s1send6packages,num:100
+s2receive6packages,num:100
+
+ s2 -> s1 
+s2send6packages,num:200
+s1receive6packages,num:200
+
+ s1 -> s2 
+s1send8packages,num:100
+s2receive8packages,num:100
+
+ s2 -> s1 
+s2send8packages,num:200
+s1receive8packages,num:200
+
+ s1 -> s2 
+s1send10packages,num:100
+s2receive10packages,num:100
+
+ s2 -> s1 
+s2send10packages,num:200
+s1receive10packages,num:200
+
+ s1 -> s2 
+s1send12packages,num:100
+s2receive12packages,num:100
+
+ s2 -> s1 
+s2send12packages,num:200
+s1receive12packages,num:200
+
+ s1 -> s2 
+s1send14packages,num:100
+s2receive14packages,num:100
+
+ s2 -> s1 
+s2send14packages,num:200
+s1receive14packages,num:200
+
+ s1 -> s2 
+s1send16packages,num:100
+s2receive16packages,num:100
+
+ s2 -> s1 
+s2send16packages,num:200
+s1receive16packages,num:200
+
+ s1 -> s2 
+s1send18packages,num:100
+s2receive18packages,num:100
+
+ s2 -> s1 
+s2send18packages,num:200
+s1receive18packages,num:200
+
+ s1 -> s2 
+s1send20packages,num:100
+s2receive20packages,num:100
+
+ s2 -> s1 
+s2send20packages,num:200
+s1receive20packages,num:200
+
+ s1 -> s2 
+s1send22packages,num:100
+s2receive22packages,num:100
+
+ s2 -> s1 
+s2send22packages,num:200
+s1receive22packages,num:200
+
+ s1 -> s2 
+s1send24packages,num:100
+s2receive24packages,num:100
+
+ s2 -> s1 
+s2send24packages,num:200
+s1receive24packages,num:200
+
+ s1 -> s2 
+s1send26packages,num:100
+s2receive26packages,num:100
+
+ s2 -> s1 
+s2send26packages,num:200
+s1receive26packages,num:200
+
+ s1 -> s2 
+s1send28packages,num:100
+s2receive28packages,num:100
+
+ s2 -> s1 
+s2send28packages,num:200
+s1receive28packages,num:200
+
+ s1 -> s2 
+s1send30packages,num:100
+s2receive30packages,num:100
+
+ s2 -> s1 
+s2send30packages,num:200
+s1receive30packages,num:200
+
+ s1 -> s2 
+s1send32packages,num:100
+s2receive32packages,num:100
+
+ s2 -> s1 
+s2send32packages,num:200
+s1receive32packages,num:200
+
+ s1 -> s2 
+s1send34packages,num:100
+s2receive34packages,num:100
+
+ s2 -> s1 
+s2send34packages,num:200
+s1receive34packages,num:200
+
+ s1 -> s2 
+s1send36packages,num:100
+s2receive36packages,num:100
+
+ s2 -> s1 
+s2send36packages,num:200
+s1receive36packages,num:200
+
+ s1 -> s2 
+s1send38packages,num:100
+s2receive38packages,num:100
+
+ s2 -> s1 
+s2send38packages,num:200
+s1receive38packages,num:200
+
+ s1 -> s2 
+s1send38packages,num:100
+s2receive38packages,num:100
+
+ s2 -> s1 
+s2send38packages,num:200
+s1receive38packages,num:200
+
+ s1 -> s2 
+s1send38packages,num:100
+s2receive38packages,num:100
+
+ s2 -> s1 
+s2send38packages,num:200
+s1receive38packages,num:200
+
+ s1 -> s2 
+s1send38packages,num:100
+s2receive38packages,num:100
+
+ s2 -> s1 
+s2send38packages,num:200
+s1receive38packages,num:200
